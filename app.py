@@ -347,4 +347,4 @@ def token_info():
     return jsonify(info)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000, debug=True, use_reloader=False)
+    app.run(host='0.0.0.0', port=5001, debug=True, use_reloader=False)
