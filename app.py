@@ -14,7 +14,7 @@ import urllib3
 import random
 
 # Configuration
-TOKEN_BATCH_SIZE = 100
+TOKEN_BATCH_SIZE = 200
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # Global State for Batch Management
@@ -347,4 +347,4 @@ def token_info():
     return jsonify(info)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001, debug=True, use_reloader=False)
+    app.run(host='0.0.0.0', port=8000, debug=True, use_reloader=False)
