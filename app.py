@@ -295,13 +295,22 @@ def handle_requests():
     actual_player_uid_from_profile = int(uid_param)
     player_nickname_from_profile = "N/A"
 
+    # Fix: .get() hata kar direct attributes use kiye hain
     if after_info and hasattr(after_info, 'AccountInfo'):
-        after_like_count = int(after_info.AccountInfo.Likes)
-        actual_player_uid_from_profile = int(after_info.AccountInfo.UID)
-        if after_info.AccountInfo.PlayerNickname:
-            player_nickname_from_profile = str(after_info.AccountInfo.PlayerNickname)
-        else:
-            player_nickname_from_profile = "N/A"
+        try:
+            # Agar AccountInfo object hai toh aise chalega
+            after_like_count = int(after_info.AccountInfo.Likes)
+            actual_player_uid_from_profile = int(after_info.AccountInfo.UID)
+            
+            if hasattr(after_info.AccountInfo, 'PlayerNickname'):
+                player_nickname_from_profile = str(after_info.AccountInfo.PlayerNickname)
+            else:
+                player_nickname_from_profile = "N/A"
+        except AttributeError:
+            # Agar kabhi dictionary nikla toh ye fallback hai
+            after_like_count = int(after_info.AccountInfo.get('Likes', 0))
+            actual_player_uid_from_profile = int(after_info.AccountInfo.get('UID', 0))
+            player_nickname_from_profile = str(after_info.AccountInfo.get('PlayerNickname', 'N/A'))
     else:
         print(f"Could not reliably fetch 'after' profile info for UID {uid_param} on {server_name_param}.")
 
